@@ -1,0 +1,37 @@
+type Sprint
+  @model
+  @auth(
+    rules: [
+      { allow: public, provider: apiKey, operations: [create, read, update, delete] }
+      { allow: private, operations: [create, read, update, delete] }
+    ]
+  ) {
+  id: ID!
+  name: String!
+  goal: String
+  startDate: AWSDate
+  endDate: AWSDate
+  tasks: [Task] @hasMany
+}
+
+type Task
+  @model
+  @auth(
+    rules: [
+      { allow: public, provider: apiKey, operations: [create, read, update, delete] }
+      { allow: private, operations: [create, read, update, delete] }
+    ]
+  ) {
+  id: ID!
+  title: String!
+  description: String
+  status: TaskStatus!
+  assignee: String
+  sprintId: ID
+}
+
+enum TaskStatus {
+  TODO
+  IN_PROGRESS
+  DONE
+}
