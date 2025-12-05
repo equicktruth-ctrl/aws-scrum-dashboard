@@ -1,3 +1,19 @@
+# AWS Scrum Dashboard
+
+A web-based Scrum board for managing sprints and tasks, backed by an AWS Amplify GraphQL API.
+
+## Features
+
+- Create and list sprints, stored in an AWS AppSync GraphQL API via Amplify. 
+- Add tasks tied to a sprint and categorize them into Todo, In Progress, and Done columns.
+- React frontend built in VS Code, configured with `generateClient` from `aws-amplify/api` to call the backend.
+
+## Tech Stack
+
+- React (Create React App)
+- AWS Amplify (Auth + GraphQL API), AWS AppSync, DynamoDB
+- JavaScript, HTML, CSS, Git & GitHub
+
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
