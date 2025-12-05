@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { generateClient } from 'aws-amplify/api';
 import { listSprints, listTasks } from './graphql/queries';
-import { createSprint, createTask } from './graphql/mutations';
+import { createTask } from './graphql/mutations';
 import logo from './logo.svg';
 import './App.css';
 
@@ -9,8 +9,6 @@ const client = generateClient();
 
 function App() {
   const [sprints, setSprints] = useState([]);
-  const [newSprintName, setNewSprintName] = useState('');
-
   const [tasks, setTasks] = useState([]);
   const [selectedSprintId, setSelectedSprintId] = useState('');
   const [newTaskTitle, setNewTaskTitle] = useState('');
@@ -55,7 +53,10 @@ function App() {
       console.error('Error creating task', err);
     }
   }
-
+      const todoTasks = tasks.filter((t) => t.status === 'TODO');
+      const inProgressTasks = tasks.filter((t) => t.status === 'IN_PROGRESS');
+      const doneTasks = tasks.filter((t) => t.status === 'DONE');
+      
   return (
     <div className="App">
       <header className="App-header">
@@ -94,42 +95,35 @@ function App() {
           <button type="submit">Add Task</button>
         </form>
 
-        <ul>
-          {sprints.map((sprint) => (
-            <li key={sprint.id}>{sprint.name}</li>
-          ))}
-        </ul>
+        <p>• Sprint 1</p>
+        <p style={{ marginTop: '0.5rem', fontSize: '0.9rem', opacity: 0.85 }}>
+          Sprint 1 – {todoTasks.length} task(s) Todo, {inProgressTasks.length} In Progress, {doneTasks.length} Done
+        </p>
     <div className="board">
       <div className="column">
-        <h2>Todo</h2>
+        <h2>Todo ({todoTasks.length})</h2>
         <ul>
-          {tasks
-            .filter((t) => t.status === 'TODO')
-            .map((t) => (
-              <li key={t.id}>{t.title}</li>
-            ))}
+          {todoTasks.map((t) => (
+            <li key={t.id}>{t.title}</li>
+          ))}
         </ul>
       </div>
 
-      <div className="column">
-        <h2>In Progress</h2>
+      <div className="column in-progress">
+        <h2>In Progress ({inProgressTasks.length})</h2>
         <ul>
-          {tasks
-            .filter((t) => t.status === 'IN_PROGRESS')
-            .map((t) => (
-              <li key={t.id}>{t.title}</li>
-            ))}
+          {inProgressTasks.map((t) => (
+            <li key={t.id}>{t.title}</li>
+          ))}
         </ul>
       </div>
 
-      <div className="column">
-        <h2>Done</h2>
+      <div className="column done">
+        <h2>Done ({doneTasks.length})</h2>
         <ul>
-          {tasks
-            .filter((t) => t.status === 'DONE')
-            .map((t) => (
-              <li key={t.id}>{t.title}</li>
-            ))}
+          {doneTasks.map((t) => (
+            <li key={t.id}>{t.title}</li>
+          ))}
         </ul>
       </div>
     </div>
